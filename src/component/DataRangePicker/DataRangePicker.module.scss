@@ -1,0 +1,21 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: 12px;
+  margin-bottom: 2px;
+  text-align: left;
+}

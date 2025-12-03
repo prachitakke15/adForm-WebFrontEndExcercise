@@ -1,0 +1,40 @@
+.form {
+  margin-bottom: 20px;
+
+  border-radius: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.field label {
+  font-size: 12px;
+  margin-bottom: 2px;
+}
+
+.field input {
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.button {
+  padding: 8px 14px;
+  border: none;
+  background: #1976d2;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.error {
+  color: red;
+  font-size: 11px;
+  margin-left: 4px;
+}

@@ -1,0 +1,21 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px #e0e0e0;
+}
+
+.thead {
+  background: #f4f4f4;
+}
+
+.thLeft {
+  padding: 8px;
+  text-align: left;
+}
+
+.thRight {
+  padding: 8px;
+  text-align: right;
+}
