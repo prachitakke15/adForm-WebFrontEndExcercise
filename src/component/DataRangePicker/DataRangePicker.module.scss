@@ -1,21 +1,37 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: 4px;
 }
 
 .row {
   display: flex;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 
 .col {
   display: flex;
   flex-direction: column;
+  gap: 4px;
 }
 
 .label {
   font-size: 12px;
-  margin-bottom: 2px;
-  text-align: left;
+  font-weight: 600;
+  color: #555;
+}
+
+input[type="date"] {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  width: 160px;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+
+  &:focus {
+    border-color: #1976d2;
+    box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.15);
+    outline: none;
+  }
 }

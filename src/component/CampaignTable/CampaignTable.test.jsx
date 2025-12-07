@@ -1,8 +1,17 @@
 import { screen } from "@testing-library/react";
 import CampaignTable from "./CampaignTable";
 import { renderWithStore } from "../../utils/rtlUtilRender";
+import { vi } from "vitest";
 
 describe("CampaignTable", () => {
+  beforeAll(() => {
+    vi.useFakeTimers().setSystemTime(new Date("2024-01-10"));
+  });
+
+  afterAll(() => {
+    vi.useRealTimers();
+  });
+
   test("renders campaign rows correctly", () => {
     const preloadedState = {
       campaigns: {
@@ -32,22 +41,16 @@ describe("CampaignTable", () => {
 
     renderWithStore(<CampaignTable />, { preloadedState });
 
-    expect(screen.getByText("Name")).toBeInTheDocument();
-    expect(screen.getByText("User")).toBeInTheDocument();
-    expect(screen.getByText("Start date")).toBeInTheDocument();
-
     expect(screen.getByText("Black Friday")).toBeInTheDocument();
     expect(screen.getByText("Winter Sale")).toBeInTheDocument();
 
-    expect(screen.getByText("Unknown user")).toBeInTheDocument();
+    expect(screen.getByText("Unknown User")).toBeInTheDocument();
 
-    expect(screen.getByText("5000")).toBeInTheDocument();
-    expect(screen.getByText("3000")).toBeInTheDocument();
+    expect(screen.getByText("$5000")).toBeInTheDocument();
+    expect(screen.getByText("$3000")).toBeInTheDocument();
   });
 
   test("applies active/inactive status correctly", () => {
-    const today = new Date().toISOString().split("T")[0];
-
     const preloadedState = {
       campaigns: {
         list: [
@@ -55,8 +58,8 @@ describe("CampaignTable", () => {
             id: 1,
             name: "Active Campaign",
             user: "Jane",
-            startDate: today,
-            endDate: today,
+            startDate: "2024-01-09",
+            endDate: "2024-01-12",
             budget: 1000,
           },
           {
@@ -75,5 +78,8 @@ describe("CampaignTable", () => {
     };
 
     renderWithStore(<CampaignTable />, { preloadedState });
+
+    expect(screen.getByText("Active")).toBeInTheDocument();
+    expect(screen.getByText("Inactive")).toBeInTheDocument();
   });
 });

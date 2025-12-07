@@ -3,20 +3,19 @@ import { useDispatch } from "react-redux";
 import { addCampaign } from "../../features/campaignSlice";
 import styles from "./AddCampaign.module.scss";
 
-function AddCampaign() {
+function AddCampaign({ onClose }) {
   const dispatch = useDispatch();
 
   const [name, setName] = useState("");
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
   const [budget, setBudget] = useState("");
-  const [userId, setUserId] = useState("");
   const [error, setError] = useState("");
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (!name || !start || !end || !budget || !userId) {
+    if (!name || !start || !end || !budget) {
       setError("Please fill all fields");
       return;
     }
@@ -26,8 +25,6 @@ function AddCampaign() {
       return;
     }
 
-    setError("");
-
     dispatch(
       addCampaign({
         id: Date.now(),
@@ -35,7 +32,7 @@ function AddCampaign() {
         startDate: start,
         endDate: end,
         budget: Number(budget),
-        userId: Number(userId),
+        userId: Math.floor(Math.random() * 100000),
       })
     );
 
@@ -43,60 +40,67 @@ function AddCampaign() {
     setStart("");
     setEnd("");
     setBudget("");
-    setUserId("");
+    setError("");
+
+    if (onClose) onClose();
   }
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
-      <div className={styles.field}>
-        <label htmlFor="name">Name</label>
-        <input id="name" value={name} onChange={(e) => setName(e.target.value)} />
-      </div>
+    <div className={styles.wrapper}>
+      <button className={styles.closeBtn} onClick={onClose}>
+        ×
+      </button>
 
-      <div className={styles.field}>
-        <label htmlFor="start">Start date</label>
-        <input
-          type="date"
-          id="start"
-          value={start}
-          onChange={(e) => setStart(e.target.value)}
-        />
-      </div>
+      <form className={styles.form} onSubmit={handleSubmit}>
 
-      <div className={styles.field}>
-        <label htmlFor="end">End date</label>
-        <input
-          type="date"
-          id="end"
-          value={end}
-          onChange={(e) => setEnd(e.target.value)}
-        />
-      </div>
+        <div className={styles.field}>
+          <label htmlFor="name">Name</label>
+          <input
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
 
-      <div className={styles.field}>
-        <label htmlFor="budget">Budget ($)</label>
-        <input
-          type="number"
-          id="budget"
-          value={budget}
-          onChange={(e) => setBudget(e.target.value)}
-        />
-      </div>
+        <div className={styles.field}>
+          <label htmlFor="start">Start date</label>
+          <input
+            id="start"
+            type="date"
+            value={start}
+            onChange={(e) => setStart(e.target.value)}
+          />
+        </div>
 
-      <div className={styles.field}>
-        <label htmlFor="userId">User ID</label>
-        <input
-          type="number"
-          id="userId"
-          value={userId}
-          onChange={(e) => setUserId(e.target.value)}
-        />
-      </div>
+        <div className={styles.field}>
+          <label htmlFor="end">End date</label>
+          <input
+            id="end"
+            type="date"
+            value={end}
+            onChange={(e) => setEnd(e.target.value)}
+          />
+        </div>
 
-      <button type="submit" className={styles.button}>Add Campaign</button>
+        <div className={styles.field}>
+          <label htmlFor="budget">Budget ($)</label>
+          <input
+            id="budget"
+            type="number"
+            value={budget}
+            min="0"
+            inputMode="numeric"
+            onChange={(e) => setBudget(e.target.value)}
+          />
+        </div>
 
-      {error && <div className={styles.error}>{error}</div>}
-    </form>
+        <button className={styles.button} type="submit">
+          Add Campaign
+        </button>
+
+        {error && <div className={styles.error}>{error}</div>}
+      </form>
+    </div>
   );
 }
 

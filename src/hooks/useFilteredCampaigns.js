@@ -1,56 +1,39 @@
 import { useSelector } from "react-redux";
 
 export function useFilteredCampaigns() {
-  const list = useSelector((state) => state.campaigns.list);
-  const searchValue = useSelector((state) => state.campaigns.searchValue);
-  const startDate = useSelector((state) => state.campaigns.startDate);
-  const endDate = useSelector((state) => state.campaigns.endDate);
+  const list = useSelector((s) => s.campaigns.list);
+  const searchValue = useSelector((s) => s.campaigns.searchValue);
+  const startDate = useSelector((s) => s.campaigns.startDate);
+  const endDate = useSelector((s) => s.campaigns.endDate);
 
   const today = new Date();
 
-  const filtered = list
+  return list
     .map((c) => {
       const start = new Date(c.startDate);
       const end = new Date(c.endDate);
 
       return {
         ...c,
-        isActive: today >= start && today <= end
+        isActive: today >= start && today <= end,
       };
     })
     .filter((c) => {
-      const matchesSearch =
-        c.name.toLowerCase().includes(searchValue.toLowerCase());
-
-      if (!matchesSearch) return false;
+      if (!c.name.toLowerCase().includes(searchValue.toLowerCase())) return false;
 
       if (!startDate && !endDate) return true;
 
-      const start = new Date(c.startDate);
-      const end = new Date(c.endDate);
-      const selectedStart = startDate ? new Date(startDate) : null;
-      const selectedEnd = endDate ? new Date(endDate) : null;
+      const s = new Date(startDate);
+      const e = new Date(endDate);
+      const cs = new Date(c.startDate);
+      const ce = new Date(c.endDate);
 
-      const startInside =
-        selectedStart &&
-        selectedEnd &&
-        start >= selectedStart &&
-        start <= selectedEnd;
+      if (endDate && startDate && e < s) return false;
 
-      const endInside =
-        selectedStart &&
-        selectedEnd &&
-        end >= selectedStart &&
-        end <= selectedEnd;
+      const startInside = cs >= s && cs <= e;
+      const endInside = ce >= s && ce <= e;
+      const coversRange = cs <= s && ce >= e;
 
-      const overlaps =
-        selectedStart &&
-        selectedEnd &&
-        start <= selectedStart &&
-        end >= selectedEnd;
-
-      return startInside || endInside || overlaps;
+      return startInside || endInside || coversRange;
     });
-
-  return filtered;
 }
